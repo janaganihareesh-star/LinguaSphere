@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+lingua-ai/node_modules/
+lingua-ai/client/node_modules/
+lingua-ai/server/node_modules/
+
+# Environment files
+.env
+lingua-ai/server/.env
+lingua-ai/client/.env
+
+# Build outputs
+build/
+lingua-ai/client/build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
