@@ -78,7 +78,8 @@ const OCRTranslate = () => {
       });
       setTranslatedText(res.data.translatedText);
     } catch (err) {
-      setError("Translation failed");
+      console.error('OCR Translate API Error:', err);
+      setError(err.response?.data?.message || err.message || "Translation failed");
     } finally {
       setTranslateLoading(false);
     }

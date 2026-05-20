@@ -28,7 +28,8 @@ const Favorites = () => {
       setFavorites(response.data.favorites);
       setFilteredFavorites(response.data.favorites);
     } catch (err) {
-      setError('Failed to load favorites');
+      console.error('Favorites Fetch Error:', err);
+      setError(err.response?.data?.message || err.message || 'Failed to load favorites');
     } finally {
       setLoading(false);
     }

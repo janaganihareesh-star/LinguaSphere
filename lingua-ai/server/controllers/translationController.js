@@ -55,23 +55,46 @@ exports.translateText = async (req, res) => {
 
     // Use 'en' as source when auto-detect is selected
     const source = (!sourceLang || sourceLang === 'auto') ? 'en' : sourceLang;
+    let result = '';
 
-    // Google Translate Free API — Most accurate, supports Telugu perfectly
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-    
-    const transRes = await axios.get(url, { timeout: 10000 });
-    
-    if (!transRes.data || !transRes.data[0]) {
-      throw new Error('Translation response invalid');
+    try {
+      // Primary: Google Translate Free API — Most accurate, supports Telugu perfectly
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+      
+      const transRes = await axios.get(url, { 
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+      });
+      
+      if (transRes.data && transRes.data[0]) {
+        // Google returns nested arrays — extract all translated parts and join
+        result = transRes.data[0]
+          .filter(chunk => chunk && chunk[0])
+          .map(chunk => chunk[0])
+          .join('');
+      }
+    } catch (googleError) {
+      console.warn('Google API failed, trying fallback:', googleError.message);
     }
 
-    // Google returns nested arrays — extract all translated parts and join
-    const result = transRes.data[0]
-      .filter(chunk => chunk && chunk[0])
-      .map(chunk => chunk[0])
-      .join('');
+    // Fallback API if Google fails
+    if (!result) {
+      try {
+        const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${source}|${targetLang}`;
+        const fallbackRes = await axios.get(fallbackUrl, { timeout: 10000 });
+        if (fallbackRes.data && fallbackRes.data.responseData && fallbackRes.data.responseData.translatedText) {
+          result = fallbackRes.data.responseData.translatedText;
+        }
+      } catch (fallbackError) {
+        console.error('Fallback API failed:', fallbackError.message);
+      }
+    }
 
-    if (!result) throw new Error('Empty translation result');
+    if (!result) {
+      throw new Error('All translation services failed to process the text.');
+    }
 
     // SAVE TO HISTORY
     const translation = await Translation.create({
@@ -92,7 +115,7 @@ exports.translateText = async (req, res) => {
 
   } catch (error) {
     console.error('Translation Error:', error.message);
-    res.status(500).json({ success: false, message: 'Translation failed. Please try again.' });
+    res.status(500).json({ success: false, message: 'Translation failed. Please try again later.' });
   }
 };
 

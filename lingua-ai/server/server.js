@@ -22,6 +22,11 @@ app.use(express.json());
 // Connect to Database
 connectDB();
 
+// Root Route
+app.get('/', (req, res) => {
+  res.send('<h1>LinguaAI API Server is Running! 🚀</h1><p>Please use the React frontend at <a href="http://localhost:3000">http://localhost:3000</a></p>');
+});
+
 // Test Route
 app.get('/api/test', (req, res) => {
   res.status(200).json({ 

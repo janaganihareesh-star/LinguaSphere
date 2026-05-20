@@ -21,7 +21,8 @@ const Dashboard = () => {
         setStats(statsRes.data);
         setRecentHistory(historyRes.data.history.slice(0, 5));
       } catch (err) {
-        setError('Failed to load dashboard data');
+        console.error('Dashboard Fetch Error:', err);
+        setError(err.response?.data?.message || err.message || 'Failed to load dashboard data');
       } finally {
         setLoading(false);
       }

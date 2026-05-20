@@ -33,7 +33,8 @@ const History = () => {
       setHistory(response.data.history);
       setFilteredHistory(response.data.history);
     } catch (err) {
-      setError('Failed to load history');
+      console.error('History Fetch Error:', err);
+      setError(err.response?.data?.message || err.message || 'Failed to load history');
     } finally {
       setLoading(false);
     }

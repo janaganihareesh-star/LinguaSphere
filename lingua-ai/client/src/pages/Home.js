@@ -95,7 +95,8 @@ const Home = () => {
         console.log(`Detected language: ${response.data.detectedLanguage}`);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Translation failed. Please try again later.');
+      console.error('Translate API Error:', err);
+      setError(err.response?.data?.message || err.message || 'Translation failed. Please try again later.');
     } finally {
       setLoading(false);
     }
