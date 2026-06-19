@@ -38,7 +38,6 @@ const useTextToSpeech = () => {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
 
-    const token = localStorage.getItem('token');
     const shortLang = langCode.split('-')[0];
 
     const audio = new Audio();
