@@ -138,9 +138,20 @@ const OCRTranslate = () => {
                   <option value="eng">English (Default)</option>
                   <option value="hin">Hindi</option>
                   <option value="tel">Telugu</option>
+                  <option value="tam">Tamil</option>
+                  <option value="mal">Malayalam</option>
+                  <option value="kan">Kannada</option>
+                  <option value="mar">Marathi</option>
+                  <option value="ben">Bengali</option>
+                  <option value="guj">Gujarati</option>
+                  <option value="pan">Punjabi</option>
+                  <option value="ara">Arabic</option>
                   <option value="spa">Spanish</option>
                   <option value="fra">French</option>
                   <option value="deu">German</option>
+                  <option value="jpn">Japanese</option>
+                  <option value="kor">Korean</option>
+                  <option value="chi_sim">Chinese</option>
                 </select>
                 <div className="form-text text-muted mb-3" style={{ fontSize: '0.75rem' }}>
                   ⚠️ Select the exact language of the text visible in your photo, NOT the language you want to translate to.
@@ -195,8 +206,20 @@ const OCRTranslate = () => {
                   <option value="en">English</option>
                   <option value="te">Telugu</option>
                   <option value="hi">Hindi</option>
+                  <option value="ta">Tamil</option>
+                  <option value="ml">Malayalam</option>
+                  <option value="kn">Kannada</option>
+                  <option value="mr">Marathi</option>
+                  <option value="bn">Bengali</option>
+                  <option value="gu">Gujarati</option>
+                  <option value="pa">Punjabi</option>
+                  <option value="ar">Arabic</option>
                   <option value="es">Spanish</option>
                   <option value="fr">French</option>
+                  <option value="de">German</option>
+                  <option value="ja">Japanese</option>
+                  <option value="ko">Korean</option>
+                  <option value="zh">Chinese</option>
                 </select>
               </div>
               <div className="col-md-8 d-flex align-items-end">

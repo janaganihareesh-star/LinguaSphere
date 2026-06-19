@@ -5,12 +5,20 @@ export const SPEECH_LANG_CODES = {
   en: 'en-US',
   te: 'te-IN',
   hi: 'hi-IN',
+  ta: 'ta-IN',
+  ml: 'ml-IN',
+  kn: 'kn-IN',
+  mr: 'mr-IN',
+  bn: 'bn-IN',
+  gu: 'gu-IN',
+  pa: 'pa-IN',
+  ar: 'ar-SA',
   es: 'es-ES',
   fr: 'fr-FR',
   de: 'de-DE',
-  ar: 'ar-SA',
-  zh: 'zh-CN',
   ja: 'ja-JP',
+  ko: 'ko-KR',
+  zh: 'zh-CN',
   ru: 'ru-RU',
   pt: 'pt-BR'
 };
@@ -38,7 +46,7 @@ const useSpeechRecognition = () => {
     setError('');
     const recognition = new SpeechRecognition();
     
-    recognition.continuous = false; // Stop after one sentence
+    recognition.continuous = true; // Keep listening until user stops
     recognition.interimResults = true; // Show results as user speaks
     recognition.lang = languageCode;
 

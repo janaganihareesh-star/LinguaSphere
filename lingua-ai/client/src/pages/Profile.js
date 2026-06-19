@@ -121,9 +121,17 @@ const Profile = () => {
                   <option value="ta">Tamil</option>
                   <option value="ml">Malayalam</option>
                   <option value="kn">Kannada</option>
+                  <option value="mr">Marathi</option>
+                  <option value="bn">Bengali</option>
+                  <option value="gu">Gujarati</option>
+                  <option value="pa">Punjabi</option>
+                  <option value="ar">Arabic</option>
                   <option value="es">Spanish</option>
                   <option value="fr">French</option>
                   <option value="de">German</option>
+                  <option value="ja">Japanese</option>
+                  <option value="ko">Korean</option>
+                  <option value="zh">Chinese</option>
                 </select>
               </div>
 

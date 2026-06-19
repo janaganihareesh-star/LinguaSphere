@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
 import useSpeechRecognition, { SPEECH_LANG_CODES } from '../hooks/useSpeechRecognition';
 import useTextToSpeech, { TTS_LANG_CODES } from '../hooks/useTextToSpeech';
@@ -21,8 +21,7 @@ const Home = () => {
     listening, 
     supported: speechSupported, 
     startListening, 
-    stopListening, 
-    setTranscript 
+    stopListening
   } = useSpeechRecognition();
 
   const { 
@@ -32,13 +31,23 @@ const Home = () => {
     stopSpeaking 
   } = useTextToSpeech();
 
+  const textBeforeListeningRef = useRef('');
+
   // Update input text when speech transcript changes
   useEffect(() => {
-    if (transcript) {
-      setInputText(transcript);
-      setCharCount(transcript.length);
+    if (listening && transcript) {
+      const newText = textBeforeListeningRef.current 
+        ? `${textBeforeListeningRef.current} ${transcript}` 
+        : transcript;
+      setInputText(newText);
+      setCharCount(newText.length);
     }
-  }, [transcript]);
+  }, [transcript, listening]);
+
+  const handleStartListening = () => {
+    textBeforeListeningRef.current = inputText;
+    startListening(SPEECH_LANG_CODES[sourceLang]);
+  };
 
   const handleSwapLanguages = () => {
     if (sourceLang === 'auto') return;
@@ -151,9 +160,17 @@ const Home = () => {
                 <option value="ta">Tamil</option>
                 <option value="ml">Malayalam</option>
                 <option value="kn">Kannada</option>
+                <option value="mr">Marathi</option>
+                <option value="bn">Bengali</option>
+                <option value="gu">Gujarati</option>
+                <option value="pa">Punjabi</option>
+                <option value="ar">Arabic</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
                 <option value="de">German</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="zh">Chinese</option>
               </select>
             </div>
             <div className="card-body p-0">
@@ -174,7 +191,7 @@ const Home = () => {
                 {!listening ? (
                   <button 
                     className="btn btn-sm btn-outline-success me-2"
-                    onClick={() => startListening(SPEECH_LANG_CODES[sourceLang])}
+                    onClick={handleStartListening}
                     disabled={!speechSupported}
                     title={!speechSupported ? "Voice input not supported in this browser" : "Start speaking"}
                   >
@@ -199,9 +216,10 @@ const Home = () => {
         {/* Swap Button for Desktop */}
         <div className="col-12 col-md-2 d-none d-md-flex align-items-center justify-content-center">
           <button 
-            className="btn btn-light shadow-sm rounded-circle p-3" 
+            className="btn-swap shadow-sm" 
             onClick={handleSwapLanguages}
             disabled={sourceLang === 'auto'}
+            title="Swap Languages"
           >
             ⇄
           </button>
@@ -222,9 +240,17 @@ const Home = () => {
                 <option value="ta">Tamil</option>
                 <option value="ml">Malayalam</option>
                 <option value="kn">Kannada</option>
+                <option value="mr">Marathi</option>
+                <option value="bn">Bengali</option>
+                <option value="gu">Gujarati</option>
+                <option value="pa">Punjabi</option>
+                <option value="ar">Arabic</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
                 <option value="de">German</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="zh">Chinese</option>
               </select>
             </div>
             <div className="card-body p-0">

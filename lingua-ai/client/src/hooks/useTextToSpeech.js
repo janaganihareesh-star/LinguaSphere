@@ -8,12 +8,17 @@ export const TTS_LANG_CODES = {
   ta: 'ta',
   ml: 'ml',
   kn: 'kn',
+  mr: 'mr',
+  bn: 'bn',
+  gu: 'gu',
+  pa: 'pa',
+  ar: 'ar',
   es: 'es',
   fr: 'fr',
   de: 'de',
-  ar: 'ar',
-  zh: 'zh-CN',
   ja: 'ja',
+  ko: 'ko',
+  zh: 'zh-CN',
   ru: 'ru',
   pt: 'pt'
 };
@@ -35,9 +40,6 @@ const useTextToSpeech = () => {
 
     const token = localStorage.getItem('token');
     const shortLang = langCode.split('-')[0];
-
-    // Use our backend TTS proxy — bypasses CORS completely
-    const ttsUrl = `http://localhost:9000/api/translate/tts?text=${encodeURIComponent(text)}&lang=${shortLang}`;
 
     const audio = new Audio();
     setCurrentAudio(audio);
@@ -61,23 +63,21 @@ const useTextToSpeech = () => {
       fallbackBrowserTTS(text, langCode);
     };
 
-    // Set auth header via fetch and create blob URL
-    fetch(ttsUrl, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('TTS failed');
-        return res.blob();
+    // Use our backend TTS proxy via API instance — bypasses CORS and dynamically uses baseURL
+    import('../services/api').then(({ default: api }) => {
+      api.get(`/api/translate/tts?text=${encodeURIComponent(text)}&lang=${shortLang}`, {
+        responseType: 'blob'
       })
-      .then(blob => {
-        const url = URL.createObjectURL(blob);
-        audio.src = url;
-        audio.load();
-      })
-      .catch(() => {
-        setIsSpeaking(false);
-        fallbackBrowserTTS(text, langCode);
-      });
+        .then(res => {
+          const url = URL.createObjectURL(res.data);
+          audio.src = url;
+          audio.load();
+        })
+        .catch(() => {
+          setIsSpeaking(false);
+          fallbackBrowserTTS(text, langCode);
+        });
+    });
   };
 
   const fallbackBrowserTTS = (text, langCode) => {

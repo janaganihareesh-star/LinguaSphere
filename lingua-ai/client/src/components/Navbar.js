@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+    <nav className={`navbar navbar-expand-lg ${theme === 'dark' ? 'navbar-dark' : 'navbar-light'} sticky-top shadow-sm`}>
       <div className="container">
         <NavLink className="navbar-brand fw-bold" to="/">
           🌐 {t('app_name')}
@@ -51,7 +51,7 @@ const Navbar = () => {
           <div className="d-flex align-items-center gap-3">
             {/* Theme Toggle */}
             <button 
-              className="btn btn-link text-light p-0 text-decoration-none fs-5" 
+              className={`btn btn-link p-0 text-decoration-none fs-5 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}
               onClick={toggleTheme}
               title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
             >
@@ -60,7 +60,7 @@ const Navbar = () => {
 
             {token ? (
               <div className="dropdown">
-                <button className="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                <button className={`btn btn-sm dropdown-toggle ${theme === 'dark' ? 'btn-outline-light' : 'btn-outline-dark'}`} type="button" id="userDropdown" data-bs-toggle="dropdown">
                   {user?.name} 👤
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end shadow">
@@ -71,7 +71,7 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="d-flex gap-2">
-                <NavLink className="btn btn-outline-light btn-sm" to="/login">{t('login')}</NavLink>
+                <NavLink className={`btn btn-sm ${theme === 'dark' ? 'btn-outline-light' : 'btn-outline-dark'}`} to="/login">{t('login')}</NavLink>
                 <NavLink className="btn btn-primary btn-sm" to="/register">{t('register')}</NavLink>
               </div>
             )}
